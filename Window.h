@@ -1,8 +1,7 @@
 #pragma once
 #define WIN64_LEAN_AND_MEAN
 
-#include <Windows.h>
-#include <iostream>
+#include "Input.h"
 
 using namespace std;
 
@@ -18,7 +17,7 @@ public:
 	void createWnd();
 	bool wndIsRunning();
 	void cleanupWnd();
-	static LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
+	static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 	HWND getHandle();
 	int getScrWidth();

@@ -42,10 +42,13 @@ void Window::cleanupWnd()
 	UnregisterClass(window_class.lpszClassName, GetModuleHandle(NULL));
 }
 
-LRESULT Window::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK Window::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{
+	case WM_INPUT:
+		Input::processInput(lParam);
+		break;
 
 	case WM_DESTROY:
 		PostQuitMessage(0);
