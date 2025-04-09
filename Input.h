@@ -4,8 +4,8 @@
 #include <iostream>
 #include <DirectXMath.h>
 
-#define WINDOW_WIDTH 800
-#define WINDOW_HEIGHT 600
+#define WINDOW_WIDTH 1920
+#define WINDOW_HEIGHT 1080
 
 using namespace DirectX;
 

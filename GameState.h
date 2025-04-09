@@ -6,11 +6,12 @@
 
 struct Sprite
 {
-	//ComPtr<ID3D12Resource> texture;
+	string name;
+	ComPtr<ID3D11Resource> texture;
+	ComPtr<ID3D11ShaderResourceView> srv;
 	XMFLOAT2 position;
 	XMVECTOR color;
 	bool renderCondition;
-	//D3D12_GPU_DESCRIPTOR_HANDLE gpuHandle;
 };
 
 /// <summary>
@@ -26,8 +27,8 @@ public:
 	void render(D3DX*);
 
 protected:
-	//ComPtr<ID3D12DescriptorHeap> descriptorHeap;
-	vector<Sprite> sprites;
+	//ComPtr<ID3D11DescriptorHeap> descriptorHeap;
+	vector<Sprite*> sprites;
 	unique_ptr<SpriteBatch> spriteBatch;
 };
 

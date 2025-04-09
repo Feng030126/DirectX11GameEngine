@@ -2,46 +2,31 @@
 
 void GameState::render(D3DX* d3dx)
 {
-	////init() in each gameState should setup the description heap
-	//d3dx->getCommandList()->SetDescriptorHeaps(1, descriptorHeap.GetAddressOf());
+	d3dx->getContext()->ClearRenderTargetView(
+		d3dx->getRenderTargetView(),
+		Colors::Black
+	);
 
- //   // Set viewport
- //   D3D12_VIEWPORT viewport = {
- //       0.0f, 0.0f,
- //       static_cast<float>(WINDOW_WIDTH), static_cast<float>(WINDOW_HEIGHT),
- //       0.0f, 1.0f
- //   };
+	ID3D11RenderTargetView* renderTargetView = d3dx->getRenderTargetView();
 
- //   // Begin drawing sprites
- //   spriteBatch->SetViewport(viewport);
+	d3dx->getContext()->OMSetRenderTargets(1, &renderTargetView, nullptr);
 
- //   try
- //   {
- //       spriteBatch->Begin(d3dx->getCommandList());
- //   }
- //   catch (const exception& e)
- //   {
- //       cout << "error at begin" << e.what() << endl;
- //   }
+	spriteBatch->Begin();
 
- //   // Draw each sprite
- //   for (const auto& sprite : sprites) {
- //       if (sprite.renderCondition) {
- //           spriteBatch->Draw(
- //               sprite.gpuHandle,
- //               XMUINT2(sprite.texture->GetDesc().Width, sprite.texture->GetDesc().Height),
- //               sprite.position,
- //               sprite.color
- //           );
- //       }
- //   }
+	for (const auto& sprite : sprites)
+	{
+		if (sprite->renderCondition)
+		{
+			spriteBatch->Draw(
+				sprite->srv.Get(),
+				sprite->position,
+				Colors::White
+			);
+		}
+	}
 
- //   try
- //   {
- //       spriteBatch->End();
- //   }
- //   catch (const exception& e)
- //   {
- //       cout << "error at end" << e.what() << endl;
- //   }
+	spriteBatch->End();
+	HRESULT hr = d3dx->getSwapChain()->Present(0, 0);
+
+	renderTargetView->Release();
 }
