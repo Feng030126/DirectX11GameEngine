@@ -15,12 +15,12 @@ void GameState::render(D3DX* d3dx)
 
 	for (const auto& sprite : sprites)
 	{
-		if (sprite->renderCondition)
+		if (sprite.renderCondition)
 		{
 			spriteBatch->Draw(
-				sprite->srv.Get(),
-				sprite->position,
-				Colors::White
+				sprite.srv.Get(), //texture
+				sprite.position,
+				sprite.color
 			);
 		}
 	}

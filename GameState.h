@@ -28,7 +28,7 @@ public:
 
 protected:
 	//ComPtr<ID3D11DescriptorHeap> descriptorHeap;
-	vector<Sprite*> sprites;
+	vector<Sprite> sprites;
 	unique_ptr<SpriteBatch> spriteBatch;
 };
 
