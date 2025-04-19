@@ -1,18 +1,8 @@
 #pragma once
-#include "GameObject.h"
+#include "Button.h"
 #include "SpriteRenderer.h"
 #include <stack>
 #include <vector>
-
-struct Sprite
-{
-	string name;
-	ComPtr<ID3D11Resource> texture;
-	ComPtr<ID3D11ShaderResourceView> srv;
-	XMFLOAT2 position;
-	XMVECTOR color;
-	bool renderCondition;
-};
 
 /// <summary>
 /// The base game state, inherit this to create new "scene"
@@ -28,7 +18,7 @@ public:
 
 protected:
 	//ComPtr<ID3D11DescriptorHeap> descriptorHeap;
-	vector<Sprite> sprites;
+	vector<GameObject> gameObjects;
 	unique_ptr<SpriteBatch> spriteBatch;
 };
 

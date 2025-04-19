@@ -17,11 +17,6 @@ RECT Button::hitBox()
 	return hitBox;
 }
 
-XMVECTOR Button::getColor()
-{
-	return color;
-}
-
 void Button::setButtonState(int a)
 {
 	if (a == IDLE)

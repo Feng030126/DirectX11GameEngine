@@ -13,16 +13,24 @@ void GameState::render(D3DX* d3dx)
 
 	spriteBatch->Begin();
 
-	for (const auto& sprite : sprites)
+	for (auto& go : gameObjects)
 	{
-		if (sprite.renderCondition)
+		if (!go.getShouldRender())
 		{
-			spriteBatch->Draw(
-				sprite.srv.Get(), //texture
-				sprite.position,
-				sprite.color
-			);
+			continue;
 		}
+
+		spriteBatch->Draw(
+			go.getTexture(),
+			go.getPosition(),
+			nullptr,
+			go.getColor(), 
+			go.getRotation(), 
+			go.getOrigin(), 
+			go.getScale(),
+			go.getSpriteEffects(), 
+			go.getLayerDepth()
+		);
 	}
 
 	spriteBatch->End();

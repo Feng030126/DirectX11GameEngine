@@ -25,24 +25,16 @@ void MainMenu::init(D3DX* d3dx, FrameTimer* frameTimer)
 		return;
 	}
 
-	Sprite sprite;
-	sprite.name = "button_start";
-	sprite.texture = move(texture);
-	sprite.srv = move(srv);
-	sprite.position = XMFLOAT2(100, 100);
-	sprite.color = XMVectorSet(1, 1, 1, 1);
-	sprite.renderCondition = true;
+	Button startButton;
 
-	sprites.push_back(sprite);
+	startButton.setName("StartButton");
+	startButton.setTexture(srv.Get());
+	startButton.setPosition(100, 100);
+
+	gameObjects.push_back(startButton);
  }
 
 void MainMenu::update(D3DX*, stack<unique_ptr<GameState>>*, FrameTimer*)
 {
-	for(auto & sprite : sprites)
-	{
-		if (sprite.name == "button_start")
-		{
-			sprite.position.x += 0.1f;
-		}
-	}
+	
 }
