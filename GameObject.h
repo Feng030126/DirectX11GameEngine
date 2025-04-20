@@ -1,5 +1,5 @@
 #pragma once
-#include "FrameTimer.h"
+#include "IHitbox.h"
 
 class GameObject
 {

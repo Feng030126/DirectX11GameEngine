@@ -15,21 +15,21 @@ void GameState::render(D3DX* d3dx)
 
 	for (auto& go : gameObjects)
 	{
-		if (!go.getShouldRender())
+		if (!go->getShouldRender())
 		{
 			continue;
 		}
 
 		spriteBatch->Draw(
-			go.getTexture(),
-			go.getPosition(),
+			go->getTexture(),
+			go->getPosition(),
 			nullptr,
-			go.getColor(), 
-			go.getRotation(), 
-			go.getOrigin(), 
-			go.getScale(),
-			go.getSpriteEffects(), 
-			go.getLayerDepth()
+			go->getColor(), 
+			go->getRotation(), 
+			go->getOrigin(), 
+			go->getScale(),
+			go->getSpriteEffects(), 
+			go->getLayerDepth()
 		);
 	}
 
@@ -37,4 +37,12 @@ void GameState::render(D3DX* d3dx)
 	HRESULT hr = d3dx->getSwapChain()->Present(0, 0);
 
 	renderTargetView->Release();
+}
+
+void GameState::cleanup()
+{
+	cout << "Cleaning up game state" << endl;
+
+	//Just clear the list, and for individual pointers, it will be deleted by child
+	gameObjects.clear();
 }

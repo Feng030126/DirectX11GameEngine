@@ -22,14 +22,7 @@ int main()
 	unique_ptr<stack<unique_ptr<GameState>>> gsm = make_unique<stack<unique_ptr<GameState>>>();
 
 	window->createWnd();
-	if (!d3dx->createD3DX(window.get()))
-	{
-		cout << "Failed to create D3DX" << endl;
-		window->cleanupWnd();
-		return -1;
-	
-	}
-
+	d3dx->createD3DX(window.get());
 	Input::initialize(window->getHandle());
 
 	unique_ptr<MainMenu> mainMenu = make_unique<MainMenu>();
@@ -44,6 +37,12 @@ int main()
 		gsm->top()->render(d3dx.get());
 	}
 
+	for(int i = 0; i < gsm->size(); i++)
+	{
+		gsm->top()->cleanup();
+		gsm->pop();
+	}
+	
 	d3dx->cleanupD3DX();
 	window->cleanupWnd();
 

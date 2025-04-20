@@ -133,8 +133,10 @@
     <ClInclude Include="FrameTimer.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameState.h" />
+    <ClInclude Include="IHitbox.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="Physics.h" />
     <ClInclude Include="SpriteRenderer.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
@@ -147,6 +149,7 @@
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="SpriteRenderer.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -155,6 +158,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="assets\cursor_sprite.png" />
     <Image Include="assets\start_game.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,6 +1,7 @@
 #pragma once
 #include "Button.h"
-#include "SpriteRenderer.h"
+#include "Cursor.h"
+#include "Physics.h"
 #include <stack>
 #include <vector>
 
@@ -15,10 +16,11 @@ public:
 
 	//shared among gameState
 	void render(D3DX*);
+	virtual void cleanup();
 
 protected:
 	//ComPtr<ID3D11DescriptorHeap> descriptorHeap;
-	vector<GameObject> gameObjects;
+	vector<GameObject*> gameObjects;
 	unique_ptr<SpriteBatch> spriteBatch;
 };
 
