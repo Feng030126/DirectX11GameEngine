@@ -2,8 +2,10 @@
 #include "Button.h"
 #include "Cursor.h"
 #include "Physics.h"
+#include "Font.h"
 #include <stack>
 #include <vector>
+#include <SpriteFont.h>
 
 /// <summary>
 /// The base game state, inherit this to create new "scene"
@@ -21,6 +23,8 @@ public:
 protected:
 	//ComPtr<ID3D11DescriptorHeap> descriptorHeap;
 	vector<GameObject*> gameObjects;
+	vector<Font*> fonts;
 	unique_ptr<SpriteBatch> spriteBatch;
+	unique_ptr<SpriteFont> spriteFont;
 };
 

@@ -2,11 +2,10 @@
 
 void MainMenu::init(D3DX* d3dx, FrameTimer* frameTimer)
 {
-	frameTimer->init(120);
-
 	HRESULT hr;
 
 	spriteBatch.reset(new SpriteBatch(d3dx->getContext()));
+	spriteFont.reset(new SpriteFont(d3dx->getDevice(), L"assets/orbitron.spritefont"));
 
 	ComPtr<ID3D11ShaderResourceView> srv;
 
@@ -29,7 +28,7 @@ void MainMenu::init(D3DX* d3dx, FrameTimer* frameTimer)
 	startButton->setName("StartButton");
 	startButton->setTexture(srv.Get());
 	startButton->setPosition(810, 660);
-	startButton->setSize(300,100);
+	startButton->setSize(300, 100);
 
 	gameObjects.push_back(startButton);
 
@@ -56,28 +55,43 @@ void MainMenu::init(D3DX* d3dx, FrameTimer* frameTimer)
 
 	gameObjects.push_back(cursor);
 
+	title = new Font();
+
+	title->setText(L"Some random platformer \n with gravity gimmick");
+	title->setPosition(800, 500);
+
+	fonts.push_back(title);
+
 	ShowCursor(false);
- }
+}
 
 void MainMenu::update(D3DX* d3dx, stack<unique_ptr<GameState>>* gameStates, FrameTimer* timer)
 {
-	for (int i = 0; i < timer->framesToUpdate(); i++) {
 
-		startButton->setButtonState(0);
-		cursor->setPosition(Input::getMousePos().x, Input::getMousePos().y);
+	startButton->setButtonState(0);
 
-		if(Physics::rectangleCollision(startButton->hitBox(), cursor->hitBox()))
+	float currentXPos = Input::getMousePos().x;
+	float currentYPos = Input::getMousePos().y;
+
+	cursor->setPosition(Input::getMousePos().x, Input::getMousePos().y);
+
+	if (Physics::rectangleCollision(startButton->hitBox(), cursor->hitBox()))
+	{
+		startButton->setButtonState(1);
+
+		if (Input::isMouseButtonPressed(0))
 		{
-			startButton->setButtonState(1);
-
-			if(Input::isMouseButtonPressed(0))
-			{
-				startButton->setButtonState(2);
-			}
+			startButton->setButtonState(2);
 		}
-
-
 	}
+
+	if (Input::getMousePos().x < 0) currentXPos = 0;
+	if (Input::getMousePos().x > WINDOW_WIDTH) currentXPos = WINDOW_WIDTH;
+	if (Input::getMousePos().y < 0) currentYPos = 0;
+	if (Input::getMousePos().y > WINDOW_HEIGHT) currentYPos = WINDOW_HEIGHT;
+
+	Input::setMousePos(currentXPos, currentYPos);
+
 }
 
 void MainMenu::cleanup()
@@ -88,5 +102,6 @@ void MainMenu::cleanup()
 
 	delete startButton;
 	delete cursor;
+	delete title;
 
 }

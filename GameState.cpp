@@ -33,6 +33,15 @@ void GameState::render(D3DX* d3dx)
 		);
 	}
 
+	for (auto& font : fonts)
+	{
+		spriteFont->DrawString(
+			spriteBatch.get(),
+			font->getText().c_str(),
+			font->getPosition()
+		);
+	}
+
 	spriteBatch->End();
 	HRESULT hr = d3dx->getSwapChain()->Present(0, 0);
 
@@ -45,4 +54,5 @@ void GameState::cleanup()
 
 	//Just clear the list, and for individual pointers, it will be deleted by child
 	gameObjects.clear();
+	fonts.clear();
 }

@@ -6,15 +6,15 @@
 
 int main()
 {
-	#if (_WIN32_WINNT >= 0x0A00 /*_WIN32_WINNT_WIN10*/)
-		Wrappers::RoInitializeWrapper initialize(RO_INIT_MULTITHREADED);
-		if (FAILED(initialize))
-			return -1;
-	#else
-		HRESULT hr = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
-		if (FAILED(hr))
-			return -1;
-	#endif
+#if (_WIN32_WINNT >= 0x0A00 /*_WIN32_WINNT_WIN10*/)
+	Wrappers::RoInitializeWrapper initialize(RO_INIT_MULTITHREADED);
+	if (FAILED(initialize))
+		return -1;
+#else
+	HRESULT hr = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
+	if (FAILED(hr))
+		return -1;
+#endif
 
 	unique_ptr<Window> window = make_unique<Window>();
 	unique_ptr<D3DX> d3dx = make_unique<D3DX>();
@@ -31,18 +31,25 @@ int main()
 
 	gsm->top()->init(d3dx.get(), frameTimer.get());
 
+	frameTimer->init(60);
+
 	while (window->wndIsRunning())
 	{
-		gsm->top()->update(d3dx.get(), gsm.get(), frameTimer.get());
+		for (int i = 0; i < frameTimer->framesToUpdate(); i++)
+		{
+			gsm->top()->update(d3dx.get(), gsm.get(), frameTimer.get());
+		}
+
 		gsm->top()->render(d3dx.get());
 	}
 
-	for(int i = 0; i < gsm->size(); i++)
+	//Cleanup leftover game states
+	for (int i = 0; i < gsm->size(); i++)
 	{
 		gsm->top()->cleanup();
 		gsm->pop();
 	}
-	
+
 	d3dx->cleanupD3DX();
 	window->cleanupWnd();
 

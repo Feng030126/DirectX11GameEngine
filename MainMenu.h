@@ -7,6 +7,7 @@ class MainMenu :
 private:
     Button* startButton;
     Cursor* cursor;
+    Font* title;
 
 public:
     void init(D3DX*, FrameTimer*);

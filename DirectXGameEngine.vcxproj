@@ -130,6 +130,7 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="Cursor.h" />
     <ClInclude Include="D3DX.h" />
+    <ClInclude Include="Font.h" />
     <ClInclude Include="FrameTimer.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameState.h" />
@@ -137,13 +138,13 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Physics.h" />
-    <ClInclude Include="SpriteRenderer.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Cursor.cpp" />
     <ClCompile Include="D3DX.cpp" />
+    <ClCompile Include="Font.cpp" />
     <ClCompile Include="FrameTimer.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameState.cpp" />
@@ -151,10 +152,10 @@
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Source.cpp" />
-    <ClCompile Include="SpriteRenderer.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="assets\orbitron.spritefont" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
