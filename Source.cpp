@@ -31,15 +31,9 @@ int main()
 
 	gsm->top()->init(d3dx.get(), frameTimer.get());
 
-	frameTimer->init(60);
-
 	while (window->wndIsRunning())
 	{
-		for (int i = 0; i < frameTimer->framesToUpdate(); i++)
-		{
-			gsm->top()->update(d3dx.get(), gsm.get(), frameTimer.get());
-		}
-
+		gsm->top()->update(d3dx.get(), gsm.get(), frameTimer.get());
 		gsm->top()->render(d3dx.get());
 	}
 

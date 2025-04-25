@@ -23,7 +23,6 @@ public:
 protected:
 	//ComPtr<ID3D11DescriptorHeap> descriptorHeap;
 	vector<GameObject*> gameObjects;
-	vector<Font*> fonts;
 	unique_ptr<SpriteBatch> spriteBatch;
 	unique_ptr<SpriteFont> spriteFont;
 };

@@ -20,25 +20,34 @@ void GameState::render(D3DX* d3dx)
 			continue;
 		}
 
+		if(go->getIsFont())
+		{
+			spriteFont->DrawString(
+				spriteBatch.get(),
+				go->getName().c_str(), // Use the name as the text to be rendered
+				go->getPosition(),
+				go->getColor(),
+				go->getRotation(),
+				go->getOrigin(),
+				go->getScale(),
+				go->getSpriteEffects(),
+				go->getLayerDepth()
+			);
+			continue;
+		}
+
+		RECT sourceRect = go->getSourceRect();
+
 		spriteBatch->Draw(
 			go->getTexture(),
 			go->getPosition(),
-			nullptr,
+			&sourceRect,
 			go->getColor(), 
 			go->getRotation(), 
 			go->getOrigin(), 
 			go->getScale(),
 			go->getSpriteEffects(), 
 			go->getLayerDepth()
-		);
-	}
-
-	for (auto& font : fonts)
-	{
-		spriteFont->DrawString(
-			spriteBatch.get(),
-			font->getText().c_str(),
-			font->getPosition()
 		);
 	}
 
@@ -54,5 +63,4 @@ void GameState::cleanup()
 
 	//Just clear the list, and for individual pointers, it will be deleted by child
 	gameObjects.clear();
-	fonts.clear();
 }

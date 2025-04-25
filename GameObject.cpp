@@ -12,7 +12,7 @@ XMFLOAT2 GameObject::getPosition()
 
 void GameObject::setColor(float r, float g, float b, float a)
 {
-	color = {r,g,b,a};
+	color = { r,g,b,a };
 }
 
 XMVECTOR GameObject::getColor()
@@ -23,6 +23,25 @@ XMVECTOR GameObject::getColor()
 void GameObject::setTexture(ID3D11ShaderResourceView* srv)
 {
 	texture = srv;
+
+	//By default, set the rect to full rect
+	ID3D11Resource* resource = nullptr;
+
+	texture->GetResource(&resource);
+
+	ID3D11Texture2D* textureResource = nullptr;
+	resource->QueryInterface<ID3D11Texture2D>(&textureResource);
+
+	D3D11_TEXTURE2D_DESC desc;
+	textureResource->GetDesc(&desc);
+
+	sourceRect.left = 0;
+	sourceRect.top = 0;
+	sourceRect.right = desc.Width;
+	sourceRect.bottom = desc.Height;
+
+	resource->Release();
+	textureResource->Release();
 }
 
 ID3D11ShaderResourceView* GameObject::getTexture()
@@ -98,4 +117,25 @@ void GameObject::setName(string name)
 string GameObject::getName()
 {
 	return name;
+}
+
+void GameObject::setIsFont(bool isFont)
+{
+	this->isFont = isFont;
+}
+
+bool GameObject::getIsFont()
+{
+	return isFont;
+}
+
+void GameObject::setSourceRect(RECT sourceRect)
+{
+	this->sourceRect = sourceRect;
+
+}
+
+RECT GameObject::getSourceRect()
+{
+	return sourceRect;
 }

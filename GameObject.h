@@ -8,8 +8,10 @@ protected:
 
 	//Rendering data
 	bool shouldRender = true;
+	bool isFont = false;
 
 	ComPtr<ID3D11ShaderResourceView> texture;
+	RECT sourceRect = { 0,0,0,0 };
 	XMFLOAT2 position = { 0,0 };
 	XMVECTOR color = Colors::White;
 	float rotation = 0;
@@ -40,5 +42,9 @@ public:
 	bool getShouldRender();
 	void setName(string name);
 	string getName();
+	void setIsFont(bool isFont);
+	bool getIsFont();
+	void setSourceRect(RECT sourceRect);
+	RECT getSourceRect();
 };
 
