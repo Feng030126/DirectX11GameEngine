@@ -4,7 +4,10 @@
 
 class Font : public GameObject
 {
+private:
+	string text;
 public:
-	Font();
+	void setText(string text);
+	string getText();
 };
 

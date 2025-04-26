@@ -1,6 +1,11 @@
 #include "Font.h"
 
-Font::Font()
+void Font::setText(string text)
 {
-	isFont = true;
+	this->text = text;
+}
+
+string Font::getText()
+{
+	return text;
 }

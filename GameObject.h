@@ -8,7 +8,6 @@ protected:
 
 	//Rendering data
 	bool shouldRender = true;
-	bool isFont = false;
 
 	ComPtr<ID3D11ShaderResourceView> texture;
 	RECT sourceRect = { 0,0,0,0 };
@@ -20,7 +19,6 @@ protected:
 	SpriteEffects effects = SpriteEffects_None;
 	float layerDepth = 0;
 	
-
 public:
 	void setPosition(float x, float y);
 	XMFLOAT2 getPosition();
@@ -42,9 +40,9 @@ public:
 	bool getShouldRender();
 	void setName(string name);
 	string getName();
-	void setIsFont(bool isFont);
-	bool getIsFont();
 	void setSourceRect(RECT sourceRect);
 	RECT getSourceRect();
+
+	virtual ~GameObject() = default;
 };
 

@@ -20,18 +20,18 @@ void GameState::render(D3DX* d3dx)
 			continue;
 		}
 
-		if(go->getIsFont())
+		if(Font* font = dynamic_cast<Font*>(go))
 		{
 			spriteFont->DrawString(
 				spriteBatch.get(),
-				go->getName().c_str(), // Use the name as the text to be rendered
-				go->getPosition(),
-				go->getColor(),
-				go->getRotation(),
-				go->getOrigin(),
-				go->getScale(),
-				go->getSpriteEffects(),
-				go->getLayerDepth()
+				font->getText().c_str(),
+				font->getPosition(),
+				font->getColor(),
+				font->getRotation(),
+				font->getOrigin(),
+				font->getScale(),
+				font->getSpriteEffects(),
+				font->getLayerDepth()
 			);
 			continue;
 		}

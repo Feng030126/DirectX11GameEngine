@@ -10,6 +10,8 @@ private:
     Font* title1;
     Font* title2;
 
+    Character* mainCharacter;
+
 public:
     void init(D3DX*, FrameTimer*);
     void update(D3DX*, stack<unique_ptr<GameState>>*, FrameTimer*);
