@@ -1,5 +1,6 @@
 #pragma once
 #include "IHitbox.h"
+#include <vector>
 
 class GameObject
 {
@@ -45,4 +46,3 @@ public:
 
 	virtual ~GameObject() = default;
 };
-

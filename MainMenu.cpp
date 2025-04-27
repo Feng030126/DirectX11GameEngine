@@ -34,29 +34,6 @@ void MainMenu::init(D3DX* d3dx, FrameTimer* frameTimer)
 
 	gameObjects.push_back(startButton);
 
-	hr = CreateWICTextureFromFile(
-		d3dx->getDevice(),
-		d3dx->getContext(),
-		L"assets/cursor_sprite.png",
-		nullptr,
-		srv.GetAddressOf()
-	);
-
-	if (FAILED(hr))
-	{
-		cout << "Failed to load texture" << endl;
-		return;
-	}
-
-	cursor = new Cursor();
-
-	cursor->setName("Cursor");
-	cursor->setTexture(srv.Get());
-	cursor->setPosition(Input::getMousePos().x, Input::getMousePos().y);
-	cursor->setSize(1, 1);
-
-	gameObjects.push_back(cursor);
-
 	title1 = new Font();
 
 	title1->setText("Another Platformer");
@@ -91,6 +68,41 @@ void MainMenu::init(D3DX* d3dx, FrameTimer* frameTimer)
 
 	mainCharacter->setName("MainCharacter");
 	mainCharacter->setTexture(srv.Get());
+	mainCharacter->setPosition(900, 200);
+	mainCharacter->setSize(128, 128);
+	mainCharacter->setFrameCount(11, 12, 1);
+	mainCharacter->setStartFrom(0, 12, 11);
+	mainCharacter->setState(CharacterState::Walking);
+	mainCharacter->addOnStateEndListener(
+		[this](CharacterState state) {
+			this->changeCharacterState(state);
+		}
+	);
+
+	gameObjects.push_back(mainCharacter);
+
+	hr = CreateWICTextureFromFile(
+		d3dx->getDevice(),
+		d3dx->getContext(),
+		L"assets/cursor_sprite.png",
+		nullptr,
+		srv.GetAddressOf()
+	);
+
+	if (FAILED(hr))
+	{
+		cout << "Failed to load texture" << endl;
+		return;
+	}
+
+	cursor = new Cursor();
+
+	cursor->setName("Cursor");
+	cursor->setTexture(srv.Get());
+	cursor->setPosition(Input::getMousePos().x, Input::getMousePos().y);
+	cursor->setSize(1, 1);
+
+	gameObjects.push_back(cursor);
 
 	ShowCursor(false);
 }
@@ -110,6 +122,17 @@ void MainMenu::update(D3DX* d3dx, stack<unique_ptr<GameState>>* gameStates, Fram
 				startButton->setButtonState(2);
 			}
 		}
+
+		if (Input::isKeyPressed(0x44))
+		{
+			float x = mainCharacter->getPosition().x;
+
+			x++;
+
+			mainCharacter->setPosition(x, mainCharacter->getPosition().y);
+		}
+
+		mainCharacter->update();
 	}
 
 	float currentXPos = Input::getMousePos().x;
@@ -123,6 +146,27 @@ void MainMenu::update(D3DX* d3dx, stack<unique_ptr<GameState>>* gameStates, Fram
 	if (Input::getMousePos().y > WINDOW_HEIGHT) currentYPos = WINDOW_HEIGHT;
 
 	Input::setMousePos(currentXPos, currentYPos);
+}
+
+void MainMenu::changeCharacterState(CharacterState state)
+{
+	if (state == Idle)
+	{
+		mainCharacter->setState(Walking);
+	}
+	else if (state == Walking)
+	{
+		mainCharacter->setState(Jumping);
+	}
+	else if (state == Jumping)
+	{
+		mainCharacter->setState(Idle);
+	}
+	else
+	{
+		mainCharacter->setState(Idle);
+	}
+
 }
 
 void MainMenu::cleanup()

@@ -5,7 +5,6 @@
 #include "Font.h"
 #include "Character.h"
 #include <stack>
-#include <vector>
 #include <SpriteFont.h>
 
 /// <summary>

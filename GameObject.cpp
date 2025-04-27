@@ -35,10 +35,6 @@ void GameObject::setTexture(ID3D11ShaderResourceView* srv)
 	D3D11_TEXTURE2D_DESC desc;
 	textureResource->GetDesc(&desc);
 
-	cout << "Name: " << name << endl;
-	cout << "Width: " << desc.Width << endl;
-	cout << "Height: " << desc.Height << endl;
-
 	sourceRect.left = 0;
 	sourceRect.top = 0;
 	sourceRect.right = desc.Width;

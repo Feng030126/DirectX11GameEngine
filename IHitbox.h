@@ -2,8 +2,9 @@
 
 #include "FrameTimer.h"
 
-__interface IHitbox
+class IHitbox
 {
-	void setSize(float, float);
-	RECT hitBox();
+public:
+	virtual void setSize(float, float) = 0;
+	virtual RECT hitBox() = 0;
 };
