@@ -120,6 +120,11 @@ void MainMenu::update(D3DX* d3dx, stack<unique_ptr<GameState>>* gameStates, Fram
 			if (Input::isMouseButtonPressed(0))
 			{
 				startButton->setButtonState(2);
+
+				cleanup();
+				gameStates->push(make_unique<Gameplay>());
+				gameStates->top()->init(d3dx, timer);
+				break;
 			}
 		}
 
