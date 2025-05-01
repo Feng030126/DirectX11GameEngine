@@ -26,5 +26,7 @@ protected:
 	vector<GameObject*> gameObjects;
 	unique_ptr<SpriteBatch> spriteBatch;
 	unique_ptr<SpriteFont> spriteFont;
+
+	void createTexture(D3DX* d3dx, string path, ID3D11ShaderResourceView** srv);
 };
 

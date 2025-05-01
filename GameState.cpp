@@ -69,3 +69,29 @@ void GameState::cleanup()
 	//Just clear the list, and for individual pointers, it will be deleted by child
 	gameObjects.clear();
 }
+
+void GameState::createTexture(D3DX* d3dx, string path, ID3D11ShaderResourceView** srv)
+{
+	HRESULT hr;
+
+	const char* narrow = path.c_str();
+	int len = MultiByteToWideChar(CP_UTF8, 0, narrow, -1, nullptr, 0);
+	wstring wide(len, L'\0');
+	MultiByteToWideChar(CP_UTF8, 0, narrow, -1, &wide[0], len);
+
+	hr = CreateWICTextureFromFile(
+		d3dx->getDevice(),
+		d3dx->getContext(),
+		wide.c_str(),
+		nullptr,
+		srv
+	);
+
+	if (FAILED(hr))
+	{
+		cout << "Failed to load texture of path: " << path << endl;
+
+		Window::HResultDebugger(hr);
+		exit(EXIT_FAILURE);
+	}
+}

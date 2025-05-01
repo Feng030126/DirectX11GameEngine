@@ -79,3 +79,26 @@ int Window::getScrHeight()
 {
 	return scr_height;
 }
+
+void Window::HResultDebugger(HRESULT hr)
+{
+	LPVOID msgBuffer = nullptr;
+
+	FormatMessage(
+		FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+		nullptr,
+		hr,
+		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
+		(LPWSTR)&msgBuffer,
+		0,
+		nullptr
+	);
+
+	if (msgBuffer) {
+		wcerr << L"HRESULT Error 0x" << hex << hr << L": " << (LPWSTR)msgBuffer << endl;
+		LocalFree(msgBuffer);
+	}
+	else {
+		wcerr << L"HRESULT Error 0x" << hex << hr << L" (Unknown error)" << endl;
+	}
+}

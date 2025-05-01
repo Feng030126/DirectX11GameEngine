@@ -3,7 +3,8 @@
 
 class Gameplay :  public GameState
 {
-    Block* test;
+    Block* blockPlatform_01;
+    Cursor* cursor;
 
 public:
     void init(D3DX*, FrameTimer*);

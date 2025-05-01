@@ -31,4 +31,11 @@ void Button::setButtonState(int a)
 	{
 		color = { 0.5f, 0.5f,0.5f, 0.5F };
 	}
+
+	buttonState = static_cast<ButtonState>(a);
+}
+
+Button::ButtonState Button::getButtonState()
+{
+	return buttonState;
 }

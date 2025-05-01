@@ -22,5 +22,7 @@ public:
 	HWND getHandle();
 	int getScrWidth();
 	int getScrHeight();
+
+	static void HResultDebugger(HRESULT);
 };
 

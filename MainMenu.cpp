@@ -2,29 +2,15 @@
 
 void MainMenu::init(D3DX* d3dx, FrameTimer* frameTimer)
 {
-	frameTimer->init(60); // 60 FPS
-
-	HRESULT hr;
+	frameTimer->init(100);
 
 	spriteBatch.reset(new SpriteBatch(d3dx->getContext()));
 	spriteFont.reset(new SpriteFont(d3dx->getDevice(), L"assets/orbitron.spritefont"));
 
 	ComPtr<ID3D11ShaderResourceView> srv;
 
-	hr = CreateWICTextureFromFile(
-		d3dx->getDevice(),
-		d3dx->getContext(),
-		L"assets/start_game.png",
-		nullptr,
-		srv.GetAddressOf()
-	);
-
-	if (FAILED(hr))
-	{
-		cout << "Failed to load texture" << endl;
-		return;
-	}
-
+	createTexture(d3dx, "assets/start_game.png", srv.GetAddressOf());
+	
 	startButton = new Button();
 
 	startButton->setName("StartButton");
@@ -50,19 +36,7 @@ void MainMenu::init(D3DX* d3dx, FrameTimer* frameTimer)
 
 	gameObjects.push_back(title2);
 
-	hr = CreateWICTextureFromFile(
-		d3dx->getDevice(),
-		d3dx->getContext(),
-		L"assets/main_char.png",
-		nullptr,
-		srv.GetAddressOf()
-	);
-
-	if (FAILED(hr))
-	{
-		cout << "Failed to load texture" << endl;
-		return;
-	}
+	createTexture(d3dx, "assets/main_char.png", srv.GetAddressOf());
 
 	mainCharacter = new Character();
 
@@ -81,19 +55,7 @@ void MainMenu::init(D3DX* d3dx, FrameTimer* frameTimer)
 
 	gameObjects.push_back(mainCharacter);
 
-	hr = CreateWICTextureFromFile(
-		d3dx->getDevice(),
-		d3dx->getContext(),
-		L"assets/cursor_sprite.png",
-		nullptr,
-		srv.GetAddressOf()
-	);
-
-	if (FAILED(hr))
-	{
-		cout << "Failed to load texture" << endl;
-		return;
-	}
+	createTexture(d3dx, "assets/cursor_sprite.png", srv.GetAddressOf());
 
 	cursor = new Cursor();
 
@@ -111,35 +73,11 @@ void MainMenu::update(D3DX* d3dx, stack<unique_ptr<GameState>>* gameStates, Fram
 {
 	for (int i = 0; i < timer->framesToUpdate(); i++)
 	{
-		startButton->setButtonState(0);
-
-		if (Physics::rectangleCollision(startButton->hitBox(), cursor->hitBox()))
-		{
-			startButton->setButtonState(1);
-
-			if (Input::isMouseButtonPressed(0))
-			{
-				startButton->setButtonState(2);
-
-				cleanup();
-				gameStates->push(make_unique<Gameplay>());
-				gameStates->top()->init(d3dx, timer);
-				break;
-			}
-		}
-
-		if (Input::isKeyPressed(0x44))
-		{
-			float x = mainCharacter->getPosition().x;
-
-			x++;
-
-			mainCharacter->setPosition(x, mainCharacter->getPosition().y);
-		}
-
+		//Things that care for timing
 		mainCharacter->update();
 	}
 
+	//Things that don't care for timing
 	float currentXPos = Input::getMousePos().x;
 	float currentYPos = Input::getMousePos().y;
 
@@ -151,6 +89,23 @@ void MainMenu::update(D3DX* d3dx, stack<unique_ptr<GameState>>* gameStates, Fram
 	if (Input::getMousePos().y > WINDOW_HEIGHT) currentYPos = WINDOW_HEIGHT;
 
 	Input::setMousePos(currentXPos, currentYPos);
+
+	startButton->setButtonState(0);
+
+	if (Physics::rectangleCollision(startButton->hitBox(), cursor->hitBox()))
+	{
+		startButton->setButtonState(1);
+	}
+
+	if (Input::isMouseButtonPressed(0) && startButton->getButtonState() == 1)
+	{
+		startButton->setButtonState(2);
+
+		cleanup();
+		gameStates->push(make_unique<Gameplay>());
+		gameStates->top()->init(d3dx, timer);
+		return;
+	}
 }
 
 void MainMenu::changeCharacterState(CharacterState state)
