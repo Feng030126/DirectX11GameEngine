@@ -38,6 +38,11 @@ void GameState::render(D3DX* d3dx)
 
 		RECT sourceRect = go->getSourceRect();
 
+		if (Block* block = dynamic_cast<Block*>(go))
+		{
+			block->renderBlock(spriteBatch.get());
+		}
+
 		spriteBatch->Draw(
 			go->getTexture(),
 			go->getPosition(),

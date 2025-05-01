@@ -3,6 +3,7 @@
 #include "Cursor.h"
 #include "Physics.h"
 #include "Font.h"
+#include "Block.h"
 #include "Character.h"
 #include <stack>
 #include <SpriteFont.h>
