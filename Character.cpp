@@ -54,9 +54,9 @@ RECT Character::hitBox()
 {
 	RECT hitBox;
 
-	hitBox.top = position.y;
+	hitBox.top = XMVectorGetY(position);
 	hitBox.bottom = hitBox.top + singleSpriteSize.y;
-	hitBox.left = position.x;
+	hitBox.left = XMVectorGetX(position);
 	hitBox.right = hitBox.left + singleSpriteSize.x;
 
 	return hitBox;
@@ -93,11 +93,27 @@ void Character::update()
 	currentFrame++;
 
 	calculateSourceRect();
+
+	//Physics
+	acceleration = moveForce / mass;
+
+	velocity += acceleration;
+
+	velocity += gravity;
+
+	position += velocity;
+
+	velocity = XMVectorSetX(velocity, XMVectorGetX(velocity) * friction);
 }
 
 void Character::addOnStateEndListener(function<void(CharacterState state)> callback)
 {
 	onStateEnds.push_back(callback);
+}
+
+void Character::setGravity(float g)
+{
+	gravity = XMVectorSetY(gravity, g);
 }
 
 void Character::onStateEnd(CharacterState state)

@@ -5,7 +5,7 @@ void GameObject::setPosition(float x, float y)
 	position = { x,y };
 }
 
-XMFLOAT2 GameObject::getPosition()
+XMVECTOR GameObject::getPosition()
 {
 	return position;
 }
@@ -64,7 +64,7 @@ void GameObject::setOrigin(float x, float y)
 	origin = { x, y };
 }
 
-XMFLOAT2 GameObject::getOrigin()
+XMVECTOR GameObject::getOrigin()
 {
 	return origin;
 }
@@ -122,7 +122,6 @@ string GameObject::getName()
 void GameObject::setSourceRect(RECT sourceRect)
 {
 	this->sourceRect = sourceRect;
-
 }
 
 RECT GameObject::getSourceRect()

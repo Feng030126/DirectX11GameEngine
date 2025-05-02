@@ -9,9 +9,9 @@ RECT Button::hitBox()
 {
 	RECT hitBox;
 
-	hitBox.top = position.y;
+	hitBox.top = XMVectorGetY(position);
 	hitBox.bottom = hitBox.top + size.y;
-	hitBox.left = position.x;
+	hitBox.left = XMVectorGetX(position);
 	hitBox.right = hitBox.left + size.x;
 
 	return hitBox;

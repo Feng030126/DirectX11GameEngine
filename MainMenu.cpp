@@ -52,6 +52,7 @@ void MainMenu::init(D3DX* d3dx, FrameTimer* frameTimer)
 			this->changeCharacterState(state);
 		}
 	);
+	mainCharacter->setGravity(0);
 
 	gameObjects.push_back(mainCharacter);
 
@@ -65,7 +66,6 @@ void MainMenu::init(D3DX* d3dx, FrameTimer* frameTimer)
 	cursor->setSize(1, 1);
 
 	gameObjects.push_back(cursor);
-
 	ShowCursor(false);
 }
 

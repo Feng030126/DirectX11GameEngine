@@ -59,6 +59,13 @@ void GameState::render(D3DX* d3dx)
 	spriteBatch->End();
 	HRESULT hr = d3dx->getSwapChain()->Present(0, 0);
 
+	if(FAILED(hr))
+	{
+		cout << "Failed to present swap chain" << endl;
+		Window::HResultDebugger(hr);
+		exit(EXIT_FAILURE);
+	}
+
 	renderTargetView->Release();
 }
 

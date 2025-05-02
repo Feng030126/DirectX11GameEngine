@@ -17,9 +17,11 @@ private:
 	float mass = 10.0F;
 	float speed = 30.0F;
 	float jumpForce = 500.0F;
-	float gravity = 5.0F;
+	XMVECTOR gravity = { 0,0.5f };
 	float friction = 0.7F;
-	XMFLOAT2 velocity = { 0.0F, 0.0F };
+	XMVECTOR velocity = { 0.0F, 0.0F };
+	XMVECTOR acceleration = { 0.0F, 0.0F };
+	XMVECTOR moveForce = { 0.0F, 0.0F };
 
 	float rotation = 0.0F;
 	float rotationSpeed = 0.0F;
@@ -68,5 +70,7 @@ public:
 	void update();
 
 	void addOnStateEndListener(function<void(CharacterState state)> callback);
+
+	void setGravity(float g);
 };
 

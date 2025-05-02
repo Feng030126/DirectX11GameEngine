@@ -2,7 +2,7 @@
 
 void Gameplay::init(D3DX* d3dx, FrameTimer* timer)
 {
-	timer->init(60);
+	timer->init(120);
 
 	spriteBatch.reset(new SpriteBatch(d3dx->getContext()));
 	spriteFont.reset(new SpriteFont(d3dx->getDevice(), L"assets/orbitron.spritefont"));
@@ -21,6 +21,21 @@ void Gameplay::init(D3DX* d3dx, FrameTimer* timer)
 
 	gameObjects.push_back(blockPlatform_01);
 
+	createTexture(d3dx, "assets/main_char.png", srv.GetAddressOf());
+
+	mainCharacter = new Character();
+
+	mainCharacter->setName("MainCharacter");
+	mainCharacter->setTexture(srv.Get());
+	mainCharacter->setPosition(30, 664);
+	mainCharacter->setSize(128, 128);
+	mainCharacter->setScale(0.5f);
+	mainCharacter->setFrameCount(11, 12, 1);
+	mainCharacter->setStartFrom(0, 12, 11);
+	mainCharacter->setState(CharacterState::Idle);
+
+	gameObjects.push_back(mainCharacter);
+
 	createTexture(d3dx, "assets/cursor_sprite.png", srv.GetAddressOf());
 
 	cursor = new Cursor();
@@ -37,6 +52,12 @@ void Gameplay::init(D3DX* d3dx, FrameTimer* timer)
 
 void Gameplay::update(D3DX* d3dx, stack<unique_ptr<GameState>>* states, FrameTimer* timer)
 {
+	for(int i = 0; i < timer->framesToUpdate(); i++)
+	{
+		//Things that care for timing
+		mainCharacter->update();
+	}
+
 	float currentXPos = Input::getMousePos().x;
 	float currentYPos = Input::getMousePos().y;
 
@@ -58,4 +79,5 @@ void Gameplay::cleanup()
 
 	delete blockPlatform_01;
 	delete cursor;
+	delete mainCharacter;
 }

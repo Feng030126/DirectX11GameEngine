@@ -1,10 +1,11 @@
 #include "Block.h"
 
-XMFLOAT2 Block::updateRenderPosition(float x, float y)
+XMVECTOR Block::updateRenderPosition(float x, float y)
 {
-	XMFLOAT2 blockPos = position;
-	blockPos.x += x;
-	blockPos.y += y;
+	XMVECTOR blockPos = position;
+	
+	blockPos = XMVectorSetX(blockPos, XMVectorGetX(blockPos) + x);
+	blockPos = XMVectorSetY(blockPos, XMVectorGetY(blockPos) + y);
 
 	return blockPos;
 }
@@ -19,9 +20,9 @@ RECT Block::hitBox()
 {
 	RECT hitBox;
 
-	hitBox.top = position.y;
+	hitBox.top = XMVectorGetY(position);
 	hitBox.bottom = hitBox.top + size.y;
-	hitBox.left = position.x;
+	hitBox.left = XMVectorGetX(position);
 	hitBox.right = hitBox.left + size.x;
 
 	return hitBox;
