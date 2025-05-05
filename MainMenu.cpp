@@ -2,7 +2,7 @@
 
 void MainMenu::init(D3DX* d3dx, FrameTimer* frameTimer)
 {
-	frameTimer->init(100);
+	frameTimer->init(60);
 
 	spriteBatch.reset(new SpriteBatch(d3dx->getContext()));
 	spriteFont.reset(new SpriteFont(d3dx->getDevice(), L"assets/orbitron.spritefont"));
@@ -73,39 +73,39 @@ void MainMenu::update(D3DX* d3dx, stack<unique_ptr<GameState>>* gameStates, Fram
 {
 	for (int i = 0; i < timer->framesToUpdate(); i++)
 	{
-		//Things that care for timing
 		mainCharacter->update();
+
+		float currentXPos = Input::getMousePos().x;
+		float currentYPos = Input::getMousePos().y;
+
+		cursor->setPosition(Input::getMousePos().x, Input::getMousePos().y);
+
+		if (Input::getMousePos().x < 0) currentXPos = 0;
+		if (Input::getMousePos().x > WINDOW_WIDTH) currentXPos = WINDOW_WIDTH;
+		if (Input::getMousePos().y < 0) currentYPos = 0;
+		if (Input::getMousePos().y > WINDOW_HEIGHT) currentYPos = WINDOW_HEIGHT;
+
+		Input::setMousePos(currentXPos, currentYPos);
+
+		startButton->setButtonState(0);
+
+		if (Physics::rectangleCollision(startButton->hitBox(), cursor->hitBox()))
+		{
+			startButton->setButtonState(1);
+		}
+
+		if (Input::isMouseButtonPressed(0) && startButton->getButtonState() == 1)
+		{
+			startButton->setButtonState(2);
+
+			cleanup();
+			gameStates->push(make_unique<Gameplay>());
+			gameStates->top()->init(d3dx, timer);
+			return;
+		}
 	}
 
-	//Things that don't care for timing
-	float currentXPos = Input::getMousePos().x;
-	float currentYPos = Input::getMousePos().y;
-
-	cursor->setPosition(Input::getMousePos().x, Input::getMousePos().y);
-
-	if (Input::getMousePos().x < 0) currentXPos = 0;
-	if (Input::getMousePos().x > WINDOW_WIDTH) currentXPos = WINDOW_WIDTH;
-	if (Input::getMousePos().y < 0) currentYPos = 0;
-	if (Input::getMousePos().y > WINDOW_HEIGHT) currentYPos = WINDOW_HEIGHT;
-
-	Input::setMousePos(currentXPos, currentYPos);
-
-	startButton->setButtonState(0);
-
-	if (Physics::rectangleCollision(startButton->hitBox(), cursor->hitBox()))
-	{
-		startButton->setButtonState(1);
-	}
-
-	if (Input::isMouseButtonPressed(0) && startButton->getButtonState() == 1)
-	{
-		startButton->setButtonState(2);
-
-		cleanup();
-		gameStates->push(make_unique<Gameplay>());
-		gameStates->top()->init(d3dx, timer);
-		return;
-	}
+	
 }
 
 void MainMenu::changeCharacterState(CharacterState state)

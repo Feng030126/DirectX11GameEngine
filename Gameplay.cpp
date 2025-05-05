@@ -2,7 +2,7 @@
 
 void Gameplay::init(D3DX* d3dx, FrameTimer* timer)
 {
-	timer->init(120);
+	timer->init(100);
 
 	spriteBatch.reset(new SpriteBatch(d3dx->getContext()));
 	spriteFont.reset(new SpriteFont(d3dx->getDevice(), L"assets/orbitron.spritefont"));
@@ -20,6 +20,8 @@ void Gameplay::init(D3DX* d3dx, FrameTimer* timer)
 	blockPlatform_01->setSingleBlockSize(32);
 
 	gameObjects.push_back(blockPlatform_01);
+
+	blocks.push_back(blockPlatform_01);
 
 	createTexture(d3dx, "assets/main_char.png", srv.GetAddressOf());
 
@@ -56,6 +58,26 @@ void Gameplay::update(D3DX* d3dx, stack<unique_ptr<GameState>>* states, FrameTim
 	{
 		//Things that care for timing
 		mainCharacter->update();
+
+		for(auto& block : blocks)
+		{
+			if(Physics::rectangleCollision(
+				mainCharacter->getBottomHitBox(),
+				block->hitBox()
+			))
+			{
+				mainCharacter->setPosition(
+					XMVectorGetX(mainCharacter->getPosition()),
+					block->hitBox().top - mainCharacter->getSize().y * mainCharacter->getScale()
+				);
+			}
+		}
+
+		if (Input::isKeyPressed('D'))
+		{
+			mainCharacter->setState(CharacterState::Walking);
+			mainCharacter->applyForce({mainCharacter->getSpeed(), 0.0F});
+		}
 	}
 
 	float currentXPos = Input::getMousePos().x;
@@ -76,6 +98,8 @@ void Gameplay::cleanup()
 	GameState::cleanup();
 
 	cout << "Gameplay::cleanup()" << endl;
+
+	blocks.clear();
 
 	delete blockPlatform_01;
 	delete cursor;

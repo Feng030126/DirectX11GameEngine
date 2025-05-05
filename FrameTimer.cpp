@@ -8,7 +8,7 @@ void FrameTimer::init(int fps)
 
     requestedFps = fps;
 
-    intervalsPerFrame = (float)timerFreq.QuadPart / (float)requestedFps;
+    intervalsPerFrame = (float)(timerFreq.QuadPart / requestedFps);
 }
 
 int FrameTimer::framesToUpdate()

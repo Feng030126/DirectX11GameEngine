@@ -17,7 +17,7 @@ private:
 	float mass = 10.0F;
 	float speed = 30.0F;
 	float jumpForce = 500.0F;
-	XMVECTOR gravity = { 0,0.5f };
+	XMVECTOR gravity = { 0,5.0f };
 	float friction = 0.7F;
 	XMVECTOR velocity = { 0.0F, 0.0F };
 	XMVECTOR acceleration = { 0.0F, 0.0F };
@@ -48,6 +48,14 @@ public:
 	void setSize(float x, float y) override;
 	RECT hitBox() override;
 
+	//Individual hitboxes for each side of the character
+	RECT getBottomHitBox();
+	RECT getTopHitBox();
+	RECT getLeftHitBox();
+	RECT getRightHitBox();
+
+	XMFLOAT2 getSize();
+
 	void setState(CharacterState state);
 	CharacterState getState();
 
@@ -72,5 +80,9 @@ public:
 	void addOnStateEndListener(function<void(CharacterState state)> callback);
 
 	void setGravity(float g);
+
+	void applyForce(XMVECTOR force);
+
+	float getSpeed();
 };
 

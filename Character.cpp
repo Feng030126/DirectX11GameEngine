@@ -62,6 +62,38 @@ RECT Character::hitBox()
 	return hitBox;
 }
 
+RECT Character::getBottomHitBox()
+{
+	RECT hitbox;
+
+	hitbox.left = XMVectorGetX(position) + singleSpriteSize.x * scale * 0.2;
+	hitbox.right = hitbox.left + singleSpriteSize.x * scale * 0.6;
+	hitbox.top = XMVectorGetY(position) + singleSpriteSize.y * scale * 0.8;
+	hitbox.bottom = hitbox.top + singleSpriteSize.y * scale;
+
+	return hitbox;
+}
+
+RECT Character::getTopHitBox()
+{
+	return RECT();
+}
+
+RECT Character::getLeftHitBox()
+{
+	return RECT();
+}
+
+RECT Character::getRightHitBox()
+{
+	return RECT();
+}
+
+XMFLOAT2 Character::getSize()
+{
+	return singleSpriteSize;
+}
+
 void Character::setState(CharacterState state)
 {
 	this->state = state;
@@ -114,6 +146,16 @@ void Character::addOnStateEndListener(function<void(CharacterState state)> callb
 void Character::setGravity(float g)
 {
 	gravity = XMVectorSetY(gravity, g);
+}
+
+void Character::applyForce(XMVECTOR force)
+{
+	this->moveForce += force;
+}
+
+float Character::getSpeed()
+{
+	return speed;
 }
 
 void Character::onStateEnd(CharacterState state)
