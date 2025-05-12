@@ -1,26 +1,38 @@
 #include "FrameTimer.h"
 
-void FrameTimer::init(int fps)
-{
-    QueryPerformanceFrequency(&timerFreq);
-    QueryPerformanceCounter(&timeNow);
-    QueryPerformanceCounter(&timePrevious);
-
-    requestedFps = fps;
-
-    intervalsPerFrame = (float)(timerFreq.QuadPart / requestedFps);
+void FrameTimer::init(int frameTarget) {
+    // Query performance frequency (ticks per second)
+    QueryPerformanceFrequency(&perfFreq);
+    // Compute seconds per frame (fixed timestep)
+    frameInterval = 1.0 / static_cast<double>(frameTarget);
+    // Initialize counters
+    QueryPerformanceCounter(&lastCount);
+    accumulator = 0.0;
 }
 
-int FrameTimer::framesToUpdate()
-{
-	int framesToUpdate = 0;
-	QueryPerformanceCounter(&timeNow);
+// Returns how many fixed-size update steps to run this frame
+int FrameTimer::framesToUpdate() {
+    // Get current time
+    LARGE_INTEGER currentCount;
+    QueryPerformanceCounter(&currentCount);
+    // Compute delta time in seconds
+    double deltaSeconds = static_cast<double>(currentCount.QuadPart - lastCount.QuadPart)
+        / static_cast<double>(perfFreq.QuadPart);
+    lastCount = currentCount;
+    // Accumulate elapsed time
+    accumulator += deltaSeconds;
 
-	intervalsSinceLastUpdate = (float)timeNow.QuadPart - (float)timePrevious.QuadPart;
-	framesToUpdate = (int)(intervalsSinceLastUpdate / intervalsPerFrame);
+    int updates = 0;
+    // Process as many fixed-interval steps as needed
+    while (accumulator >= frameInterval) {
+        updates++;
+        accumulator -= frameInterval;
 
-	if (framesToUpdate != 0)
-		QueryPerformanceCounter(&timePrevious);
-
-	return framesToUpdate;
+        if (updates >= 1) {
+            // Drop any excess accumulated time and break out
+            accumulator = 0.0;
+            break;
+        }
+    }
+    return updates;
 }

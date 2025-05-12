@@ -2,7 +2,7 @@
 
 void MainMenu::init(D3DX* d3dx, FrameTimer* frameTimer)
 {
-	frameTimer->init(60);
+	frameTimer->init(30);
 
 	spriteBatch.reset(new SpriteBatch(d3dx->getContext()));
 	spriteFont.reset(new SpriteFont(d3dx->getDevice(), L"assets/orbitron.spritefont"));

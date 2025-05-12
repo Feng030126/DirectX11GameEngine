@@ -8,11 +8,9 @@ public:
 	int framesToUpdate();
 
 private:
-	LARGE_INTEGER timerFreq{};
-	LARGE_INTEGER timeNow{};
-	LARGE_INTEGER timePrevious{};
-	int requestedFps{};
-	float intervalsPerFrame{};
-	float intervalsSinceLastUpdate{};
+    LARGE_INTEGER perfFreq;      // Performance counter frequency
+    LARGE_INTEGER lastCount;     // Last counter value
+    double frameInterval;        // Target frame time (seconds per update)
+    double accumulator;    
 };
 

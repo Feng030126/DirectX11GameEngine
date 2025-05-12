@@ -12,9 +12,9 @@ void Character::calculateSourceRect()
 	{
 		newRect.left = (idleStartFrom + currentFrame % idleFrameCount) * singleSpriteSize.x;
 
-		if(currentFrame % idleFrameCount == 0)
+		if (currentFrame % idleFrameCount == 0)
 		{
-			currentFrame = 0; 
+			currentFrame = 0;
 			onStateEnd(state); // Call the state end function
 		}
 	}
@@ -24,7 +24,7 @@ void Character::calculateSourceRect()
 
 		if (currentFrame % walkingFrameCount == 0)
 		{
-			currentFrame = 0; 
+			currentFrame = 0;
 			onStateEnd(state); // Call the state end function
 		}
 	}
@@ -97,8 +97,6 @@ XMFLOAT2 Character::getSize()
 void Character::setState(CharacterState state)
 {
 	this->state = state;
-
-	currentFrame = 0; // Reset to 0 on state change
 }
 
 CharacterState Character::getState()
@@ -133,9 +131,11 @@ void Character::update()
 
 	velocity += gravity;
 
+	velocity = XMVectorSetX(velocity, XMVectorGetX(velocity) * friction);
+
 	position += velocity;
 
-	velocity = XMVectorSetX(velocity, XMVectorGetX(velocity) * friction);
+	moveForce = XMVectorSet(0, 0, 0, 0);
 }
 
 void Character::addOnStateEndListener(function<void(CharacterState state)> callback)
@@ -158,9 +158,19 @@ float Character::getSpeed()
 	return speed;
 }
 
+void Character::setVelocityX(float f)
+{
+	velocity = XMVectorSetX(velocity, f);
+}
+
+void Character::setVelocityY(float f)
+{
+	velocity = XMVectorSetY(velocity, f);
+}
+
 void Character::onStateEnd(CharacterState state)
 {
-	for(auto & fn : onStateEnds)
+	for (auto& fn : onStateEnds)
 	{
 		fn(state);
 	}

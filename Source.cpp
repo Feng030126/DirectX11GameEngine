@@ -33,8 +33,8 @@ int main()
 
 	while (window->wndIsRunning())
 	{
-		gsm->top()->update(d3dx.get(), gsm.get(), frameTimer.get());
 		gsm->top()->render(d3dx.get());
+		gsm->top()->update(d3dx.get(), gsm.get(), frameTimer.get());
 	}
 
 	//Cleanup leftover game states
