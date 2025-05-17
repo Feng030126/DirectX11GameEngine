@@ -5,6 +5,7 @@
 #include "Font.h"
 #include "Block.h"
 #include "Character.h"
+#include "Timer.h"
 #include <stack>
 #include <SpriteFont.h>
 
@@ -14,11 +15,11 @@
 class GameState
 {
 public:
-	virtual void init(D3DX*, FrameTimer*) = 0;
-	virtual void update(D3DX*, stack<unique_ptr<GameState>>*, FrameTimer*) = 0;
+	virtual void init(D3DX&, FrameTimer&) = 0;
+	virtual void update(D3DX&, stack<unique_ptr<GameState>>&, FrameTimer&) = 0;
 
 	//shared among gameState
-	void render(D3DX*);
+	void render(D3DX&);
 	virtual void cleanup();
 
 protected:
@@ -27,6 +28,6 @@ protected:
 	unique_ptr<SpriteBatch> spriteBatch;
 	unique_ptr<SpriteFont> spriteFont;
 
-	void createTexture(D3DX* d3dx, string path, ID3D11ShaderResourceView** srv);
+	void createTexture(D3DX& d3dx, string path, ComPtr<ID3D11ShaderResourceView>& srv);
 };
 

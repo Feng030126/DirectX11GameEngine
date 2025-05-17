@@ -88,5 +88,7 @@ public:
 	//For case where collision is detected, manually set the velocity to 0 so it doesn't accumulate
 	void setVelocityX(float);
 	void setVelocityY(float);
+
+	float getJumpForce();
 };
 

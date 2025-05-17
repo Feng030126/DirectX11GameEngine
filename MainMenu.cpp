@@ -1,15 +1,15 @@
 #include "MainMenu.h"
 
-void MainMenu::init(D3DX* d3dx, FrameTimer* frameTimer)
+void MainMenu::init(D3DX& d3dx, FrameTimer& frameTimer)
 {
-	frameTimer->init(30);
+	frameTimer.init(30);
 
-	spriteBatch.reset(new SpriteBatch(d3dx->getContext()));
-	spriteFont.reset(new SpriteFont(d3dx->getDevice(), L"assets/orbitron.spritefont"));
+	spriteBatch.reset(new SpriteBatch(d3dx.getContext()));
+	spriteFont.reset(new SpriteFont(d3dx.getDevice(), L"assets/orbitron.spritefont"));
 
 	ComPtr<ID3D11ShaderResourceView> srv;
 
-	createTexture(d3dx, "assets/start_game.png", srv.GetAddressOf());
+	createTexture(d3dx, "assets/start_game.png", srv);
 	
 	startButton = new Button();
 
@@ -36,7 +36,7 @@ void MainMenu::init(D3DX* d3dx, FrameTimer* frameTimer)
 
 	gameObjects.push_back(title2);
 
-	createTexture(d3dx, "assets/main_char.png", srv.GetAddressOf());
+	createTexture(d3dx, "assets/main_char.png", srv);
 
 	mainCharacter = new Character();
 
@@ -56,7 +56,7 @@ void MainMenu::init(D3DX* d3dx, FrameTimer* frameTimer)
 
 	gameObjects.push_back(mainCharacter);
 
-	createTexture(d3dx, "assets/cursor_sprite.png", srv.GetAddressOf());
+	createTexture(d3dx, "assets/cursor_sprite.png", srv);
 
 	cursor = new Cursor();
 
@@ -69,9 +69,9 @@ void MainMenu::init(D3DX* d3dx, FrameTimer* frameTimer)
 	ShowCursor(false);
 }
 
-void MainMenu::update(D3DX* d3dx, stack<unique_ptr<GameState>>* gameStates, FrameTimer* timer)
+void MainMenu::update(D3DX& d3dx, stack<unique_ptr<GameState>>& gameStates, FrameTimer& timer)
 {
-	for (int i = 0; i < timer->framesToUpdate(); i++)
+	for (int i = 0; i < timer.framesToUpdate(); i++)
 	{
 		mainCharacter->update();
 
@@ -99,13 +99,11 @@ void MainMenu::update(D3DX* d3dx, stack<unique_ptr<GameState>>* gameStates, Fram
 			startButton->setButtonState(2);
 
 			cleanup();
-			gameStates->push(make_unique<Gameplay>());
-			gameStates->top()->init(d3dx, timer);
+			gameStates.push(make_unique<Gameplay>());
+			gameStates.top()->init(d3dx, timer);
 			return;
 		}
 	}
-
-	
 }
 
 void MainMenu::changeCharacterState(CharacterState state)

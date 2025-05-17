@@ -1,15 +1,15 @@
 #include "Gameplay.h"
 
-void Gameplay::init(D3DX* d3dx, FrameTimer* timer)
+void Gameplay::init(D3DX& d3dx, FrameTimer& timer)
 {
-	timer->init(30);
+	timer.init(30);
 
-	spriteBatch.reset(new SpriteBatch(d3dx->getContext()));
-	spriteFont.reset(new SpriteFont(d3dx->getDevice(), L"assets/orbitron.spritefont"));
+	spriteBatch.reset(new SpriteBatch(d3dx.getContext()));
+	spriteFont.reset(new SpriteFont(d3dx.getDevice(), L"assets/orbitron.spritefont"));
 
 	ComPtr<ID3D11ShaderResourceView> srv;
 
-	createTexture(d3dx, "assets/grassBlock.png", &srv);
+	createTexture(d3dx, "assets/grassBlock.png", srv);
 
 	blockPlatform_01 = new Block();
 
@@ -23,7 +23,7 @@ void Gameplay::init(D3DX* d3dx, FrameTimer* timer)
 
 	blocks.push_back(blockPlatform_01);
 
-	createTexture(d3dx, "assets/main_char.png", srv.GetAddressOf());
+	createTexture(d3dx, "assets/main_char.png", srv);
 
 	mainCharacter = new Character();
 
@@ -38,7 +38,7 @@ void Gameplay::init(D3DX* d3dx, FrameTimer* timer)
 
 	gameObjects.push_back(mainCharacter);
 
-	createTexture(d3dx, "assets/cursor_sprite.png", srv.GetAddressOf());
+	createTexture(d3dx, "assets/cursor_sprite.png", srv);
 
 	cursor = new Cursor();
 
@@ -53,16 +53,16 @@ void Gameplay::init(D3DX* d3dx, FrameTimer* timer)
 
 }
 
-void Gameplay::update(D3DX* d3dx, stack<unique_ptr<GameState>>* states, FrameTimer* timer)
+void Gameplay::update(D3DX& d3dx, stack<unique_ptr<GameState>>& states, FrameTimer& timer)
 {
-	for (int i = 0; i < timer->framesToUpdate(); i++)
+	for (int i = 0; i < timer.framesToUpdate(); i++)
 	{
 		for (auto& block : blocks)
 		{
 			if (Physics::rectangleCollision(
 				mainCharacter->getBottomHitBox(),
 				block->hitBox()
-			))
+			) && mainCharacter->getState() != Jumping)
 			{
 				mainCharacter->setVelocityY(0); // Set the velocity to 0 to stop accumulating velocity
 				mainCharacter->setPosition(
@@ -76,10 +76,27 @@ void Gameplay::update(D3DX* d3dx, stack<unique_ptr<GameState>>* states, FrameTim
 		{
 			mainCharacter->applyForce({ mainCharacter->getSpeed(), 0 });
 			mainCharacter->setState(Walking);
+			mainCharacter->setSpriteEffects(SpriteEffects_None);
+		}
+		else if (Input::isKeyPressed('A'))
+		{
+			mainCharacter->applyForce({ -(mainCharacter->getSpeed()), 0 });
+			mainCharacter->setState(Walking);
+			mainCharacter->setSpriteEffects(SpriteEffects_FlipHorizontally);
 		}
 		else
 		{
 			mainCharacter->setState(Idle);
+		}
+
+		if (jumpCooldown.getTime() <= 0)
+		{
+			if (Input::isKeyPressed(VK_SPACE))
+			{
+				mainCharacter->applyForce({ 0, -mainCharacter->getJumpForce() });
+				mainCharacter->setState(Jumping);
+				jumpCooldown.setTime(30);
+			}
 		}
 
 		mainCharacter->update();

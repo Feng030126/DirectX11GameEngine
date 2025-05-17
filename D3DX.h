@@ -21,7 +21,7 @@ protected:
 	HRESULT hr;
 //
 public:
-	bool createD3DX(Window* wnd);
+	bool createD3DX(Window& wnd);
 	void cleanupD3DX();
 	ID3D11Device* getDevice();
 	ID3D11DeviceContext* getContext();

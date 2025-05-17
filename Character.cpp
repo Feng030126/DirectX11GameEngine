@@ -168,6 +168,11 @@ void Character::setVelocityY(float f)
 	velocity = XMVectorSetY(velocity, f);
 }
 
+float Character::getJumpForce()
+{
+	return jumpForce;
+}
+
 void Character::onStateEnd(CharacterState state)
 {
 	for (auto& fn : onStateEnds)

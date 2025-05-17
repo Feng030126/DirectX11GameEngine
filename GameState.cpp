@@ -1,15 +1,15 @@
 #include "GameState.h"
 
-void GameState::render(D3DX* d3dx)
+void GameState::render(D3DX& d3dx)
 {
-	d3dx->getContext()->ClearRenderTargetView(
-		d3dx->getRenderTargetView(),
+	d3dx.getContext()->ClearRenderTargetView(
+		d3dx.getRenderTargetView(),
 		Colors::Black
 	);
 
-	ID3D11RenderTargetView* renderTargetView = d3dx->getRenderTargetView();
+	ID3D11RenderTargetView* renderTargetView = d3dx.getRenderTargetView();
 
-	d3dx->getContext()->OMSetRenderTargets(1, &renderTargetView, nullptr);
+	d3dx.getContext()->OMSetRenderTargets(1, &renderTargetView, nullptr);
 
 	spriteBatch->Begin();
 
@@ -57,7 +57,7 @@ void GameState::render(D3DX* d3dx)
 	}
 
 	spriteBatch->End();
-	HRESULT hr = d3dx->getSwapChain()->Present(0, 0);
+	HRESULT hr = d3dx.getSwapChain()->Present(0, 0);
 
 	if(FAILED(hr))
 	{
@@ -77,7 +77,7 @@ void GameState::cleanup()
 	gameObjects.clear();
 }
 
-void GameState::createTexture(D3DX* d3dx, string path, ID3D11ShaderResourceView** srv)
+void GameState::createTexture(D3DX& d3dx, string path, ComPtr<ID3D11ShaderResourceView>& srv)
 {
 	HRESULT hr;
 
@@ -87,11 +87,11 @@ void GameState::createTexture(D3DX* d3dx, string path, ID3D11ShaderResourceView*
 	MultiByteToWideChar(CP_UTF8, 0, narrow, -1, &wide[0], len);
 
 	hr = CreateWICTextureFromFile(
-		d3dx->getDevice(),
-		d3dx->getContext(),
+		d3dx.getDevice(),
+		d3dx.getContext(),
 		wide.c_str(),
 		nullptr,
-		srv
+		srv.GetAddressOf()
 	);
 
 	if (FAILED(hr))

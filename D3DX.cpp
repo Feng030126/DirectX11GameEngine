@@ -1,6 +1,6 @@
 #include "D3DX.h"
 
-bool D3DX::createD3DX(Window* wnd)
+bool D3DX::createD3DX(Window& wnd)
 {
 	DXGI_SWAP_CHAIN_DESC swapChainDesc;
 	ZeroMemory(&swapChainDesc, sizeof(swapChainDesc));
@@ -15,7 +15,7 @@ bool D3DX::createD3DX(Window* wnd)
 	swapChainDesc.SampleDesc.Quality = 0;
 	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	swapChainDesc.BufferCount = 1;
-	swapChainDesc.OutputWindow = wnd->getHandle();
+	swapChainDesc.OutputWindow = wnd.getHandle();
 	swapChainDesc.Windowed = FALSE;
 	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 	swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
